@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
+import posts
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -25,9 +26,9 @@ def create_post():
     review = request.form["review"]
     user_id = session["user_id"]
 
-    sql = """INSERT INTO posts (title, model_year, grade, review, user_id)
-    VALUES (?, ?, ?, ?, ?)"""
-    db.execute(sql, [title, model_year, grade, review, user_id])
+    posts.add_post(title, model_year, grade, review, user_id)
+
+
 
     return redirect("/")
 
