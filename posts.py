@@ -9,12 +9,12 @@ def get_posts():
     return db.query(sql)
 
 def get_post(post_id):
-    sql = """SELECT posts.title, 
+    sql = """SELECT posts.title,
                     posts.id,
-                    posts.model_year, 
-                    posts.grade, 
-                    posts.review, 
-                    users.username, 
+                    posts.model_year,
+                    posts.grade,
+                    posts.review,
+                    users.username,
                     users.id user_id
             FROM posts, users WHERE posts.user_id = users.id AND posts.id = ?"""
     return db.query(sql, [post_id])[0]
@@ -26,3 +26,7 @@ def update_post(post_id, title, model_year, grade, review):
                               review = ?
             WHERE id = ?"""
     db.execute(sql, [title, model_year, grade, review, post_id])
+
+def delete_post(post_id):
+    sql = "DELETE FROM posts WHERE id = ?"
+    db.execute(sql, [post_id])
