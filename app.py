@@ -15,11 +15,20 @@ def index():
     all_posts = posts.get_posts()
     return render_template("index.html", posts=all_posts)
 
+@app.route("/find_post")
+def find_post():
+    query = request.args.get("query")
+    if query:
+        results = posts.find_posts(query)
+    else:
+        query = ""
+        results = []
+    return render_template("find_post.html", query=query, results=results)
+
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     post = posts.get_post(post_id)
     return render_template("show_post.html", post=post)
-
 
 @app.route("/new_post")
 def new_post():
@@ -59,14 +68,14 @@ def delete_post(post_id):
     if request.method == "GET":
         post = posts.get_post(post_id)
         return render_template("delete_post.html", post=post)
-    
+
     if request.method == "POST":
         if "delete" in request.form:
             posts.delete_post(post_id)
             return redirect("/")
         else:
             return redirect("/post/" + str(post_id))
-    
+
 @app.route("/register")
 def register():
     return render_template("register.html")
