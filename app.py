@@ -37,6 +37,24 @@ def create_post():
 
     return redirect("/")
 
+@app.route("/edit_post/<int:post_id>")
+def edit_post(post_id):
+    post = posts.get_post(post_id)
+    return render_template("edit_post.html", post=post)
+
+@app.route("/update_post", methods=["POST"])
+def update_post():
+    post_id = request.form["post_id"]
+    title = request.form["title"]
+    model_year = request.form["model_year"]
+    grade = request.form["grade"]
+    review = request.form["review"]
+    user_id = session["user_id"]
+
+    posts.update_post(post_id, title, model_year, grade, review)
+
+    return redirect("/post/" + str(post_id))
+
 @app.route("/register")
 def register():
     return render_template("register.html")
