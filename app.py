@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session
+from flask import redirect, render_template, request, session, abort
 from werkzeug.security import generate_password_hash, check_password_hash
 import db
 import config
@@ -49,11 +49,18 @@ def create_post():
 @app.route("/edit_post/<int:post_id>")
 def edit_post(post_id):
     post = posts.get_post(post_id)
+    if post["user_id"] != session["user_id"]:
+        abort(403)
     return render_template("edit_post.html", post=post)
 
 @app.route("/update_post", methods=["POST"])
 def update_post():
     post_id = request.form["post_id"]
+
+    post = posts.get_post(post_id)
+    if post["user_id"] != session["user_id"]:
+        abort(403)
+
     title = request.form["title"]
     model_year = request.form["model_year"]
     grade = request.form["grade"]
@@ -65,8 +72,11 @@ def update_post():
 
 @app.route("/delete_post/<int:post_id>", methods=["GET", "POST"])
 def delete_post(post_id):
+    post = posts.get_post(post_id)
+    if post["user_id"] != session["user_id"]:
+        abort(403)
+
     if request.method == "GET":
-        post = posts.get_post(post_id)
         return render_template("delete_post.html", post=post)
 
     if request.method == "POST":
