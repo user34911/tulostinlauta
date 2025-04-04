@@ -16,7 +16,7 @@ def get_post(post_id):
                     posts.review,
                     users.username,
                     users.id user_id
-            FROM posts, users WHERE posts.user_id = users.id AND posts.id = ?"""
+             FROM posts, users WHERE posts.user_id = users.id AND posts.id = ?"""
     return db.query(sql, [post_id])[0]
 
 def update_post(post_id, title, model_year, grade, review):
@@ -24,7 +24,7 @@ def update_post(post_id, title, model_year, grade, review):
                               model_year = ?,
                               grade = ?,
                               review = ?
-            WHERE id = ?"""
+             WHERE id = ?"""
     db.execute(sql, [title, model_year, grade, review, post_id])
 
 def delete_post(post_id):
@@ -38,4 +38,5 @@ def find_posts(query):
              OR title LIKE ?
              OR model_year LIKE ?
              ORDER BY id DESC"""
-    return db.query(sql, ["%" + query + "%", "%" + query + "%", "%" + query + "%"])
+    haku = "%" + query + "%"
+    return db.query(sql, [haku, haku, haku])
