@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Käyttäjä {{ user.username }}</title>
+</head>
+
+<body>
+    <h1>{{ user.username }}</h1>
+    <p>
+      Julkaisujen määrä: {{ posts | count }}
+    </p>
+    <h2>Julkaisut</h2>
+    <ul>
+      {% for post in posts %}
+      <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
+      {% endfor %}
+    </ul>
+    <p>
+      <a href="/">Etusivulle</a>  <a href="/find_post">Hakuun</a>
+    </p>
+</body>
+
+</html>
