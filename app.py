@@ -40,7 +40,8 @@ def show_post(post_id):
     post = posts.get_post(post_id)
     if not post:
         abort(404)
-    return render_template("show_post.html", post=post)
+    classes = posts.get_classes(post_id)
+    return render_template("show_post.html", post=post, classes=classes)
 
 @app.route("/new_post")
 def new_post():
@@ -55,7 +56,7 @@ def create_post():
     if not title or len(title) > 50:
         abort(403)
     model_year = request.form["model_year"]
-    if not model_year or model_year < 0:
+    if not model_year or int(model_year) < 0:
         abort(403)
     grade = request.form["grade"]
     if not grade:
@@ -65,7 +66,15 @@ def create_post():
         abort(403)
     user_id = session["user_id"]
 
-    posts.add_post(title, model_year, grade, review, user_id)
+    classes = []
+    country = request.form["country"]
+    if country:
+        classes.append(("Valmistusmaa", country))
+    type = request.form["type"]
+    if type:
+        classes.append(("Tyyppi", type))
+
+    posts.add_post(title, model_year, grade, review, user_id, classes)
 
     return redirect("/")
 
