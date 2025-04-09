@@ -58,6 +58,8 @@ def update_post(post_id, title, model_year, grade, review, classes):
         db.execute(sql, [post_id, title, value])
 
 def delete_post(post_id):
+    sql = "DELETE FROM post_classes WHERE post_id = ?"
+    db.execute(sql, [post_id])
     sql = "DELETE FROM posts WHERE id = ?"
     db.execute(sql, [post_id])
 
