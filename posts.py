@@ -42,13 +42,20 @@ def get_post(post_id):
     result = db.query(sql, [post_id])
     return result[0] if result else None
 
-def update_post(post_id, title, model_year, grade, review):
+def update_post(post_id, title, model_year, grade, review, classes):
     sql = """UPDATE posts SET title = ?,
                               model_year = ?,
                               grade = ?,
                               review = ?
              WHERE id = ?"""
     db.execute(sql, [title, model_year, grade, review, post_id])
+
+    sql = "DELETE FROM post_classes WHERE post_id = ?"
+    db.execute(sql, [post_id])
+
+    sql = "INSERT INTO post_classes (post_id, title, value) VALUES (?, ?, ?)"
+    for title, value in classes:
+        db.execute(sql, [post_id, title, value])
 
 def delete_post(post_id):
     sql = "DELETE FROM posts WHERE id = ?"

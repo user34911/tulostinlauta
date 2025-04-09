@@ -85,7 +85,15 @@ def edit_post(post_id):
         abort(404)
     if post["user_id"] != session["user_id"]:
         abort(403)
-    return render_template("edit_post.html", post=post)
+
+    all_classes = posts.get_all_classes()
+    classes = {}
+    for class_entry in all_classes:
+        classes[class_entry] = ""
+    for entry in posts.get_classes(post_id):
+        classes[entry["title"]] = entry["value"]
+
+    return render_template("edit_post.html", post=post, classes=classes, all_classes=all_classes)
 
 @app.route("/update_post", methods=["POST"])
 def update_post():
@@ -99,11 +107,25 @@ def update_post():
         abort(403)
 
     title = request.form["title"]
+    if not title or len(title) > 50:
+        abort(403)
     model_year = request.form["model_year"]
+    if not model_year or int(model_year) < 0:
+        abort(403)
     grade = request.form["grade"]
+    if not grade:
+        abort(403)
     review = request.form["review"]
+    if not review or len(review) > 1000:
+        abort(403)
 
-    posts.update_post(post_id, title, model_year, grade, review)
+    classes = []
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
+
+    posts.update_post(post_id, title, model_year, grade, review, classes)
 
     return redirect("/post/" + str(post_id))
 

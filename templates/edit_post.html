@@ -26,6 +26,21 @@
         Arvostelu: <br />
         <textarea name="review" rows="8" cols="60" >{{ post.review }}</textarea>
     </p>
+    {% for class in all_classes %}
+    <p>
+      {{ class }}: <br />
+      <select name="classes">
+        <option value=""></option>
+        {% for option in all_classes[class] %}
+          {% if classes[class] == option %}
+            <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+          {% else %}
+            <option value="{{ class }}:{{ option }}">{{ option }}</option>
+          {% endif %}
+        {% endfor %}
+      </select>
+    </p>
+    {% endfor %}
     <input type="hidden" name="post_id" value="{{ post.id }}" />
     <input type="submit" value="Päivitä julkaisua" />
   </form>
