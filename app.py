@@ -52,9 +52,17 @@ def create_post():
     require_login()
 
     title = request.form["title"]
+    if not title or len(title) > 50:
+        abort(403)
     model_year = request.form["model_year"]
+    if not model_year or model_year < 0:
+        abort(403)
     grade = request.form["grade"]
+    if not grade:
+        abort(403)
     review = request.form["review"]
+    if not review or len(review) > 1000:
+        abort(403)
     user_id = session["user_id"]
 
     posts.add_post(title, model_year, grade, review, user_id)
