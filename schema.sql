@@ -15,6 +15,12 @@ CREATE TABLE posts (
 
 CREATE TABLE classes (
     id INTEGER PRIMARY KEY,
+    title TEXT,
+    value TEXT
+);
+
+CREATE TABLE post_classes (
+    id INTEGER PRIMARY KEY,
     post_id INTEGER REFERENCES posts,
     title TEXT,
     value TEXT

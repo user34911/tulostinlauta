@@ -6,12 +6,24 @@ def add_post(title, model_year, grade, review, user_id, classes):
 
     post_id = db.last_insert_id()
 
-    sql = "INSERT INTO classes (post_id, title, value) VALUES (?, ?, ?)"
+    sql = "INSERT INTO post_classes (post_id, title, value) VALUES (?, ?, ?)"
     for title, value in classes:
         db.execute(sql, [post_id, title, value])
 
+def get_all_classes():
+    sql = "SELECT title, value FROM classes ORDER BY id"
+    result = db.query(sql)
+
+    classes = {}
+    for title, value in result:
+        if title not in classes:
+            classes[title] = []
+        classes[title].append(value)
+
+    return classes
+
 def get_classes(post_id):
-    sql = "SELECT title, value FROM classes WHERE post_id = ?"
+    sql = "SELECT title, value FROM post_classes WHERE post_id = ?"
     return db.query(sql, [post_id])
 
 def get_posts():

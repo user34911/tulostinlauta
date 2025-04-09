@@ -46,7 +46,8 @@ def show_post(post_id):
 @app.route("/new_post")
 def new_post():
     require_login()
-    return render_template("new_post.html")
+    classes = posts.get_all_classes()
+    return render_template("new_post.html", classes=classes)
 
 @app.route("/create_post", methods=["POST"])
 def create_post():
@@ -67,12 +68,10 @@ def create_post():
     user_id = session["user_id"]
 
     classes = []
-    country = request.form["country"]
-    if country:
-        classes.append(("Valmistusmaa", country))
-    type = request.form["type"]
-    if type:
-        classes.append(("Tyyppi", type))
+    for entry in request.form.getlist("classes"):
+        if entry:
+            parts = entry.split(":")
+            classes.append((parts[0], parts[1]))
 
     posts.add_post(title, model_year, grade, review, user_id, classes)
 

@@ -26,32 +26,17 @@
         Arvostelu: <br />
         <textarea name="review" rows="8" cols="60" ></textarea>
     </p>
+    {% for class in classes %}
     <p>
-      Valmistusmaa: <br />
-      <select name="country">
+      {{ class }}: <br />
+      <select name="classes">
         <option value=""></option>
-        <option value="USA">USA</option>
-        <option value="Japani">Japani</option>
-        <option value="Kiina">Kiina</option>
-        <option value="Muu">(muu)</option>
+        {% for option in classes[class] %}
+        <option value="{{ class }}:{{ option }}">{{ option }}</option>
+        {% endfor %}
       </select>
     </p>
-    <p>
-      Tyyppi: <br />
-      <select name="type">
-        <option value=""></option>
-        <option value="Laser">Laser</option>
-        <option value="LED">LED</option>
-        <option value="Mustesuihku">Mustesuihku</option>
-        <option value="3D">3D</option>
-        <option value="Matriisi">Matriisi</option>
-        <option value="Lämpö">Lämpö</option>
-        <option value="Kiinteä muste">Kiinteä muste</option>
-        <option value="Piirturi">Piirturi</option>
-        <option value="Tarra">Tarra</option>
-        <option value="Muu">(muu)</option>
-      </select>
-    </p>
+    {% endfor %}
 
     <input type="submit" value="Luo julkaisu" />
   </form>
