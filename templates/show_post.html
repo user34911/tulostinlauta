@@ -35,6 +35,21 @@
     <p>
       <a href="/">Etusivulle</a>  <a href="/find_post">Hakuun</a>
     </p>
+    <h2>Kommentit</h2>
+    {% for comment in comments %}
+    <p>
+      <b><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></b><br />
+      {{ comment.comment }}
+    </p>
+    {% endfor %}
+    <h2>Lisää kommentti</h2>
+    <form action="/create_comment" method="post">
+      <p>
+        <textarea name="comment" rows="8" cols="60" ></textarea>
+      </p>
+      <input type="hidden" name="post_id" value="{{ post.id }}">
+      <input type="submit" value="Kommentoi" />
+    </form>
 </body>
 
 </html>

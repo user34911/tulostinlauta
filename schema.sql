@@ -13,6 +13,13 @@ CREATE TABLE posts (
     user_id INTEGER REFERENCES users
 );
 
+CREATE TABLE comments (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER REFERENCES users,
+    post_id INTEGER REFERENCES posts,
+    comment TEXT
+);
+
 CREATE TABLE classes (
     id INTEGER PRIMARY KEY,
     title TEXT,
