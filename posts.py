@@ -1,14 +1,16 @@
 import db
-def add_post(title, model_year, grade, review, user_id, classes):
-    sql = """INSERT INTO posts (title, model_year, grade, review, user_id)
-             VALUES (?, ?, ?, ?, ?)"""
-    db.execute(sql, [title, model_year, grade, review, user_id])
+def add_post(title, model_year, grade, review, user_id, classes, image):
+    sql = """INSERT INTO posts (title, model_year, grade, review, user_id, image)
+             VALUES (?, ?, ?, ?, ?, ?)"""
+    db.execute(sql, [title, model_year, grade, review, user_id, image])
 
     post_id = db.last_insert_id()
 
     sql = "INSERT INTO post_classes (post_id, title, value) VALUES (?, ?, ?)"
     for title, value in classes:
         db.execute(sql, [post_id, title, value])
+
+    return post_id
 
 def add_comment(post_id, user_id, comment):
     sql = "INSERT INTO comments (user_id, post_id, comment) VALUES (?, ?, ?)"
@@ -48,10 +50,16 @@ def get_post(post_id):
                     posts.grade,
                     posts.review,
                     users.username,
-                    users.id user_id
+                    users.id user_id,
+                    posts.image IS NOT NULL has_image
              FROM posts, users WHERE posts.user_id = users.id AND posts.id = ?"""
     result = db.query(sql, [post_id])
     return result[0] if result else None
+
+def get_image(post_id):
+    sql = "SELECT image FROM posts WHERE id = ?"
+    result = db.query(sql, [post_id])[0][0]
+    return result
 
 def update_post(post_id, title, model_year, grade, review, classes):
     sql = """UPDATE posts SET title = ?,
@@ -67,6 +75,10 @@ def update_post(post_id, title, model_year, grade, review, classes):
     sql = "INSERT INTO post_classes (post_id, title, value) VALUES (?, ?, ?)"
     for title, value in classes:
         db.execute(sql, [post_id, title, value])
+
+def update_image(post_id, image):
+    sql = "UPDATE posts SET image = ? WHERE id = ?"
+    db.execute(sql, [image, post_id])
 
 def delete_post(post_id):
     sql = "DELETE FROM post_classes WHERE post_id = ?"

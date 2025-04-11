@@ -44,6 +44,16 @@ def show_post(post_id):
     comments = posts.get_comments(post_id)
     return render_template("show_post.html", post=post, classes=classes, comments=comments)
 
+@app.route("/post_image/<int:post_id>")
+def show_post_image(post_id):
+    image = posts.get_image(post_id)
+    if not image:
+        abort(404)
+
+    response = make_response(bytes(image))
+    response.headers.set("Content-Type", "image/jpeg")
+    return response
+
 @app.route("/new_post")
 def new_post():
     require_login()
@@ -66,6 +76,14 @@ def create_post():
     review = request.form["review"]
     if not review or len(review) > 1000:
         abort(403)
+
+    file = request.files["image"]
+    if not file.filename.endswith(".jpg") and file:
+        return "VIRHE: väärä tiedostomuoto"
+    image = file.read()
+    if len(image) > 1000 * 1024:
+        return "VIRHE: liian suuri kuva"
+    
     user_id = session["user_id"]
 
     all_classes = posts.get_all_classes()
@@ -79,9 +97,9 @@ def create_post():
                 abort(403)
             classes.append((entry_title, entry_value))
 
-    posts.add_post(title, model_year, grade, review, user_id, classes)
+    post_id = posts.add_post(title, model_year, grade, review, user_id, classes, image)
 
-    return redirect("/")
+    return redirect("/post/" + str(post_id))
 
 @app.route("/create_comment", methods=["POST"])
 def create_comment():

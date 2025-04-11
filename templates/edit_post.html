@@ -9,17 +9,17 @@
 
     <h1>Muokkaa julkaisua</h1>
 
-  <form action="/update_post" method="post">
+  <form action="/update_post" method="post" enctype="multipart/form-data">
     <p>
       Malli: <br />
       <input type="text" name="title" value="{{ post.title }}" />
     </p>
     <p>
-        Vuosimalli: <br />
+        Vuosimalli:
         <input type="number" name="model_year" size="4" maxlength="4" value="{{ post.model_year }}" />
     </p>
     <p>
-        Arvosana: <br />
+        Arvosana:
         <input type="number" name="grade" size="1" min="0" max="5" value="{{ post.grade }}"/> /5
     </p>
     <p>

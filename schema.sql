@@ -11,7 +11,8 @@ CREATE TABLE posts (
     model_year INTEGER,
     grade INTEGER,
     review TEXT,
-    user_id INTEGER REFERENCES users
+    user_id INTEGER REFERENCES users,
+    image BLOB
 );
 
 CREATE TABLE comments (

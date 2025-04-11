@@ -7,6 +7,9 @@
 
 <body>
     <h1>{{ post.title }} ({{ post.model_year }})</h1>
+    {% if post.has_image %}
+    <img src="/post_image/{{ post.id }}" />
+    {% endif %}
     {% if session.user_id == post.user_id %}
     <p>
       <a href="/edit_post/{{ post.id }}">Muokkaa</a>
