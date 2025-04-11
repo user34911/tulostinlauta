@@ -6,7 +6,15 @@
 </head>
 
 <body>
-    <h1>{{ user.username }}</h1>
+    <h1>Käyttäjä: {{ user.username }}</h1>
+    {% if user.has_image %}
+    <img src="/image/{{ user.id }}" />
+    {% endif %}
+    {% if session.user_id == user.id %}
+    <p>
+      <a href="/add_image">Vaihda profiilikuvaa</a>
+    </p>
+    {% endif %}
     <p>
       Julkaisujen määrä: {{ posts | count }}
     </p>
