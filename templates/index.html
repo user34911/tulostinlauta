@@ -1,37 +1,16 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Tulostinlauta</title>
-</head>
+{% block title %}Tulostinlauta{% endblock %}
 
-<body>
-  <h1>Tulostinlauta</h1>
+{% block content %}
 
-  {% if session.username %}
-  <p>
-    Olet kirjautunut nimellä <b><a href="/user/{{ session.user_id }}">{{ session.username }}</a></b>
-  </p>
-  {% endif %}
+<h2>Julkaisut</h2>
+<ul>
+  {% for post in posts %}
+  <li><a href="/post/{{ post.id }}"> {{ post.title }}</a></li>
+  {% endfor %}
+</ul>
 
-  <p>
-    <a href="/find_post">Etsi julkaisu</a> -
-    {% if session.user_id %}
-    <a href="/new_post">Uusi julkaisu</a> -
-    <a href="/logout">Kirjaudu ulos</a>
-    {% else %}
-    <a href="/login">Kirjaudu sisään</a> -
-    <a href="/register">Luo tunnus</a>
-    {% endif %}
-  </p>
+{% endblock %}
 
-
-  <h2>Julkaisut</h2>
-  <ul>
-    {% for post in posts %}
-    <li><a href="/post/{{ post.id }}"> {{ post.title }}</a></li>
-    {% endfor %}
-    </ul>
-</body>
-
-</html>

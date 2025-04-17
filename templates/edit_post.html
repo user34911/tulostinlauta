@@ -1,52 +1,47 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Muokkaa julkaisua</title>
-</head>
+{% block title %}Muokkaa julkaisua{% endblock %}
 
-<body>
+{% block content %}
+<h2>Muokkaa julkaisua</h2>
 
-    <h1>Muokkaa julkaisua</h1>
-
-  <form action="/update_post" method="post" enctype="multipart/form-data">
-    <p>
-      Malli: <br />
-      <input type="text" name="title" value="{{ post.title }}" />
-    </p>
-    <p>
-      Kuva: <input type="file" name="image" accept=".jpg" />
-    </p>
-    <p>
-        Vuosimalli:
-        <input type="number" name="model_year" size="4" maxlength="4" value="{{ post.model_year }}" />
-    </p>
-    <p>
-        Arvosana:
-        <input type="number" name="grade" size="1" min="0" max="5" value="{{ post.grade }}"/> /5
-    </p>
-    <p>
-        Arvostelu: <br />
-        <textarea name="review" rows="8" cols="60" >{{ post.review }}</textarea>
-    </p>
-    {% for class in all_classes %}
-    <p>
-      {{ class }}: <br />
-      <select name="classes">
-        <option value=""></option>
-        {% for option in all_classes[class] %}
-          {% if classes[class] == option %}
-            <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
-          {% else %}
-            <option value="{{ class }}:{{ option }}">{{ option }}</option>
-          {% endif %}
-        {% endfor %}
-      </select>
-    </p>
-    {% endfor %}
-    <input type="hidden" name="post_id" value="{{ post.id }}" />
-    <input type="submit" value="Päivitä julkaisua" />
-  </form>
-</body>
-
-</html>
+<form action="/update_post" method="post" enctype="multipart/form-data">
+  <p>
+    Malli: <br />
+    <input type="text" name="title" value="{{ post.title }}" />
+  </p>
+  <p>
+    Kuva: <input type="file" name="image" accept=".jpg" />
+  </p>
+  <p>
+      Vuosimalli:
+      <input type="number" name="model_year" size="4" maxlength="4" value="{{ post.model_year }}" />
+  </p>
+  <p>
+      Arvosana:
+      <input type="number" name="grade" size="1" min="0" max="5" value="{{ post.grade }}"/> /5
+  </p>
+  <p>
+      Arvostelu: <br />
+      <textarea name="review" rows="8" cols="60" >{{ post.review }}</textarea>
+  </p>
+  {% for class in all_classes %}
+  <p>
+    {{ class }}: <br />
+    <select name="classes">
+      <option value=""></option>
+      {% for option in all_classes[class] %}
+        {% if classes[class] == option %}
+          <option value="{{ class }}:{{ option }}" selected>{{ option }}</option>
+        {% else %}
+          <option value="{{ class }}:{{ option }}">{{ option }}</option>
+        {% endif %}
+      {% endfor %}
+    </select>
+  </p>
+  {% endfor %}
+  <input type="hidden" name="post_id" value="{{ post.id }}" />
+  <input type="submit" value="Päivitä julkaisua" />
+</form>
+{% endblock %}

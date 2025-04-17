@@ -1,32 +1,25 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Käyttäjä {{ user.username }}</title>
-</head>
+{% block title %}{{ user.username }}{% endblock %}
 
-<body>
-    <h1>Käyttäjä: {{ user.username }}</h1>
-    {% if user.has_image %}
-    <img src="/image/{{ user.id }}" />
-    {% endif %}
-    {% if session.user_id == user.id %}
-    <p>
-      <a href="/add_image">Vaihda profiilikuvaa</a>
-    </p>
-    {% endif %}
-    <p>
-      Julkaisujen määrä: {{ posts | count }}
-    </p>
-    <h2>Julkaisut</h2>
-    <ul>
-      {% for post in posts %}
-      <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
-      {% endfor %}
-    </ul>
-    <p>
-      <a href="/">Etusivulle</a>  <a href="/find_post">Hakuun</a>
-    </p>
-</body>
-
-</html>
+{% block content %}
+<h2>Käyttäjä: {{ user.username }}</h2>
+{% if user.has_image %}
+<img src="/image/{{ user.id }}" />
+{% endif %}
+{% if session.user_id == user.id %}
+<p>
+  <a href="/add_image">Vaihda profiilikuvaa</a>
+</p>
+{% endif %}
+<p>
+  Julkaisujen määrä: {{ posts | count }}
+</p>
+<h3>Julkaisut</h3>
+<ul>
+  {% for post in posts %}
+  <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endblock %}

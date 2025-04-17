@@ -1,16 +1,12 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Poista julkaisu</title>
-</head>
+{% block title %}Poista julkaisu{% endblock %}
 
-<body>
-    <h1>Poista julkaisu</h1>
-  <form action="/delete_post/{{ post.id }}" method="post">
-    <input type="submit" name="delete" value="Poista julkaisu">
-    <input type="submit" name="back" value="Vitsi oli">
-  </form>
-</body>
-
-</html>
+{% block content %}
+<h2>Poista julkaisu</h2>
+<form action="/delete_post/{{ post.id }}" method="post">
+  <input type="submit" name="delete" value="Poista julkaisu">
+  <input type="submit" name="back" value="Vitsi oli">
+</form>
+{% endblock %}

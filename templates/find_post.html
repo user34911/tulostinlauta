@@ -1,32 +1,24 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Etsi julkaisu</title>
-</head>
+{% block title %}Etsi julkaisu{% endblock %}
 
-<body>
-  <h1>Etsi julkaisu</h1>
+{% block content %}
+<h2>Etsi julkaisu</h2>
 
-  <form action="/find_post" method="get">
-    <p>
-        Hakusana: <input type="text" name="query" value="{{ query }}">
-    </p>
-    <input type="submit" value="Etsi">
-  </form>
-
+<form action="/find_post" method="get">
   <p>
-    <a href="/">Takaisin</a>
+      Hakusana: <input type="text" name="query" value="{{ query }}">
   </p>
+  <input type="submit" value="Etsi">
+</form>
 
-  {% if query %}
-  <h2>Tulokset</h2>
-  <ul>
-    {% for post in results %}
-    <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
-    {% endfor %}
-  </ul>
-  {% endif %}
-</body>
-
-</html>
+{% if query %}
+<h3>Tulokset</h3>
+<ul>
+  {% for post in results %}
+  <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
+  {% endfor %}
+</ul>
+{% endif %}
+{% endblock %}

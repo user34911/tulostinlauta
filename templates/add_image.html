@@ -1,17 +1,13 @@
 <!DOCTYPE html>
-<html>
+{% extends "layout.html" %}
 
-<head>
-  <title>Lisää kuva</title>
-</head>
+{% block title %}Profiilikuva{% endblock %}
 
-<body>
-    <form action="/add_image" method="post" enctype="multipart/form-data">
-        <p>
-          Kuva: <input type="file" name="image" accept=".jpg" />
-        </p>
-        <input type="submit" value="Lähetä" />
-    </form> 
-</body>
-
-</html>
+{% block content %}
+<form action="/add_image" method="post" enctype="multipart/form-data">
+    <p>
+      Kuva: <input type="file" name="image" accept=".jpg" />
+    </p>
+    <input type="submit" value="Lähetä" />
+</form>
+{% endblock %}
