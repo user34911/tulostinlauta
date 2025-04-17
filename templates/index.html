@@ -6,11 +6,14 @@
 {% block content %}
 
 <h2>Julkaisut</h2>
-<ul>
-  {% for post in posts %}
-  <li><a href="/post/{{ post.id }}"> {{ post.title }}</a></li>
-  {% endfor %}
-</ul>
+{% for post in posts %}
+<a href="/post/{{ post.id }}" class="frontpage-post">
+<div class="frontpage-post-content">
+  <span class="frontpage-fontsize">{{ post.title }} ({{ post.model_year }})</span><br>  
+  <span class="frontpage-usertext">Käyttäjältä: {{ post.username }}</span>
+</div>
+</a>
+{% endfor %}
 
 {% endblock %}
 
