@@ -18,7 +18,7 @@
   Arvosana: {{ post.grade }}/5
 </p>
 <p>
-  {{ post.review }}
+  {{ post.review | show_lines }}
 </p>
 {% if classes %}
 <p>
@@ -37,7 +37,7 @@
 {% for comment in comments %}
 <p>
   <b><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></b><br />
-  {{ comment.comment }}
+  {{ comment.comment | show_lines }}
 </p>
 {% endfor %}
 <h3>Lisää kommentti</h3>

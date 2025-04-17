@@ -4,6 +4,7 @@ from flask import redirect, render_template, request, session, abort, make_respo
 import db
 import config
 import posts, users
+import markupsafe
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -279,3 +280,9 @@ def show_image(user_id):
     response = make_response(bytes(image))
     response.headers.set("Content-Type", "image/jpeg")
     return response
+
+@app.template_filter()
+def show_lines(content):
+    content = str(markupsafe.escape(content))
+    content = content.replace("\n", "<br />")
+    return markupsafe.Markup(content)
