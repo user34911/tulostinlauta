@@ -135,7 +135,9 @@ def edit_post(post_id):
     for entry in posts.get_classes(post_id):
         classes[entry["title"]] = entry["value"]
 
-    return render_template("edit_post.html", post=post, classes=classes, all_classes=all_classes)
+    image = posts.get_image(post_id)
+
+    return render_template("edit_post.html", post=post, classes=classes, all_classes=all_classes, image=image)
 
 @app.route("/update_post", methods=["POST"])
 def update_post():
@@ -161,6 +163,15 @@ def update_post():
     if not review or len(review) > 1000:
         abort(403)
 
+    file = request.files["image"]
+    if not file.filename.endswith(".jpg") and file:
+        return "VIRHE: väärä tiedostomuoto"
+    image = file.read()
+    if len(image) > 1000 * 1024:
+        return "VIRHE: liian suuri kuva"
+    if not image:
+        image = posts.get_image(post_id)
+
     all_classes = posts.get_all_classes()
     classes = []
     for entry in request.form.getlist("classes"):
@@ -172,7 +183,7 @@ def update_post():
                 abort(403)
             classes.append((entry_title, entry_value))
 
-    posts.update_post(post_id, title, model_year, grade, review, classes)
+    posts.update_post(post_id, title, model_year, grade, review, classes, image)
 
     return redirect("/post/" + str(post_id))
 

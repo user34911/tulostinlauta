@@ -66,13 +66,14 @@ def get_image(post_id):
         return None
     return image
 
-def update_post(post_id, title, model_year, grade, review, classes):
+def update_post(post_id, title, model_year, grade, review, classes, image):
     sql = """UPDATE posts SET title = ?,
                               model_year = ?,
                               grade = ?,
-                              review = ?
+                              review = ?,
+                              image = ?
              WHERE id = ?"""
-    db.execute(sql, [title, model_year, grade, review, post_id])
+    db.execute(sql, [title, model_year, grade, review, image, post_id])
 
     sql = "DELETE FROM post_classes WHERE post_id = ?"
     db.execute(sql, [post_id])
