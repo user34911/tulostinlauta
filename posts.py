@@ -50,16 +50,21 @@ def get_post(post_id):
                     posts.grade,
                     posts.review,
                     users.username,
-                    users.id user_id,
-                    posts.image IS NOT NULL has_image
+                    users.id user_id
              FROM posts, users WHERE posts.user_id = users.id AND posts.id = ?"""
     result = db.query(sql, [post_id])
     return result[0] if result else None
 
 def get_image(post_id):
     sql = "SELECT image FROM posts WHERE id = ?"
-    result = db.query(sql, [post_id])[0][0]
-    return result
+    result = db.query(sql, [post_id])
+    if not result:
+        return None
+
+    image = result[0][0]
+    if not image:
+        return None
+    return image
 
 def update_post(post_id, title, model_year, grade, review, classes):
     sql = """UPDATE posts SET title = ?,

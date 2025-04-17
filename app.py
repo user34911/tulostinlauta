@@ -42,7 +42,8 @@ def show_post(post_id):
         abort(404)
     classes = posts.get_classes(post_id)
     comments = posts.get_comments(post_id)
-    return render_template("show_post.html", post=post, classes=classes, comments=comments)
+    image = posts.get_image(post_id)
+    return render_template("show_post.html", post=post, classes=classes, comments=comments, image=image)
 
 @app.route("/post_image/<int:post_id>")
 def show_post_image(post_id):
@@ -83,7 +84,7 @@ def create_post():
     image = file.read()
     if len(image) > 1000 * 1024:
         return "VIRHE: liian suuri kuva"
-    
+
     user_id = session["user_id"]
 
     all_classes = posts.get_all_classes()

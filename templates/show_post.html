@@ -7,7 +7,7 @@
 
 <body>
     <h1>{{ post.title }} ({{ post.model_year }})</h1>
-    {% if post.has_image %}
+    {% if image %}
     <img src="/post_image/{{ post.id }}" />
     {% endif %}
     {% if session.user_id == post.user_id %}
