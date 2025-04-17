@@ -89,8 +89,11 @@ def update_image(post_id, image):
 def delete_post(post_id):
     sql = "DELETE FROM post_classes WHERE post_id = ?"
     db.execute(sql, [post_id])
+    sql = "DELETE FROM comments WHERE post_id = ?"
+    db.execute(sql, [post_id])
     sql = "DELETE FROM posts WHERE id = ?"
     db.execute(sql, [post_id])
+
 
 def find_posts(query):
     sql = """SELECT id, title
