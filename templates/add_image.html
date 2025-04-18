@@ -4,6 +4,11 @@
 {% block title %}Profiilikuva{% endblock %}
 
 {% block content %}
+{% for message in get_flashed_messages() %}
+<p>
+  <b>{{ message }}</b>
+</p>
+{% endfor %}
 <form action="/add_image" method="post" enctype="multipart/form-data">
     <p>
       Kuva: <input type="file" name="image" accept=".jpg" />

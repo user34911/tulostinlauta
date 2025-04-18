@@ -1,6 +1,6 @@
 import sqlite3
 from flask import Flask
-from flask import redirect, render_template, request, session, abort, make_response, g
+from flask import redirect, render_template, request, session, abort, make_response, g, flash
 import math, time
 import config
 import posts, users
@@ -71,7 +71,7 @@ def show_post_image(post_id):
 def new_post():
     require_login()
     classes = posts.get_all_classes()
-    return render_template("new_post.html", classes=classes)
+    return render_template("new_post.html", classes=classes, filled={})
 
 @app.route("/create_post", methods=["POST"])
 def create_post():
@@ -81,7 +81,7 @@ def create_post():
     if not title or len(title) > 50:
         abort(403)
     model_year = request.form["model_year"]
-    if not model_year or int(model_year) < 0:
+    if not model_year or int(model_year) < 0 or len(model_year) > 4:
         abort(403)
     grade = request.form["grade"]
     if not grade:
@@ -89,13 +89,6 @@ def create_post():
     review = request.form["review"]
     if not review or len(review) > 1000:
         abort(403)
-
-    file = request.files["image"]
-    if not file.filename.endswith(".jpg") and file:
-        return "VIRHE: väärä tiedostomuoto"
-    image = file.read()
-    if len(image) > 1000 * 1024:
-        return "VIRHE: liian suuri kuva"
 
     user_id = session["user_id"]
 
@@ -109,6 +102,22 @@ def create_post():
             if entry_value not in all_classes[entry_title]:
                 abort(403)
             classes.append((entry_title, entry_value))
+
+    file = request.files["image"]
+    if not file.filename.endswith(".jpg") and file:
+        flash("VIRHE: Väärä tiedostomuoto")
+        filled = {"title": title, "model_year": model_year, "grade": grade, "review": review}
+        for entry in classes:
+            filled[entry[0]] = entry[1]
+        return render_template("new_post.html", classes=all_classes, filled=filled)
+    image = file.read()
+    if len(image) > 1000 * 1024:
+        flash("VIRHE: Liian suuri kuva")
+        filled = {"title": title, "model_year": model_year, "grade": grade, "review": review}
+        for entry in classes:
+            filled[entry[0]] = entry[1]
+        return render_template("new_post.html", classes=all_classes, filled=filled)
+
 
     post_id = posts.add_post(title, model_year, grade, review, user_id, classes, image)
 
@@ -175,15 +184,6 @@ def update_post():
     if not review or len(review) > 1000:
         abort(403)
 
-    file = request.files["image"]
-    if not file.filename.endswith(".jpg") and file:
-        return "VIRHE: väärä tiedostomuoto"
-    image = file.read()
-    if len(image) > 1000 * 1024:
-        return "VIRHE: liian suuri kuva"
-    if not image:
-        image = posts.get_image(post_id)
-
     all_classes = posts.get_all_classes()
     classes = []
     for entry in request.form.getlist("classes"):
@@ -194,6 +194,19 @@ def update_post():
             if entry_value not in all_classes[entry_title]:
                 abort(403)
             classes.append((entry_title, entry_value))
+
+    file = request.files["image"]
+    if not file.filename.endswith(".jpg") and file:
+        flash("VIRHE: Väärä tiedostomuoto")
+        image = posts.get_image(post_id)
+        return render_template("edit_post.html", post=post, classes=classes, all_classes=all_classes, image=image)
+    image = file.read()
+    if len(image) > 1000 * 1024:
+        flash("VIRHE: Liian suuri kuva")
+        image = posts.get_image(post_id)
+        return render_template("edit_post.html", post=post, classes=classes, all_classes=all_classes, image=image)
+    if not image:
+        image = posts.get_image(post_id)
 
     posts.update_post(post_id, title, model_year, grade, review, classes, image)
 
@@ -220,27 +233,33 @@ def delete_post(post_id):
 
 @app.route("/register")
 def register():
-    return render_template("register.html")
+    return render_template("register.html", filled={})
 
 @app.route("/create", methods=["POST"])
 def create():
     username = request.form["username"]
+    if len(username) > 16:
+        abort(403)
+
     password1 = request.form["password1"]
     password2 = request.form["password2"]
     if password1 != password2:
-        return "VIRHE: salasanat eivät ole samat"
+        flash("VIRHE: Salasanat eivät täsmää")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
     try:
         users.create_user(username, password1)
+        return redirect("/")
     except sqlite3.IntegrityError:
-        return "VIRHE: tunnus on jo varattu"
-
-    return "Tunnus luotu"
+        flash("VIRHE: Käyttäjänimi varattu")
+        filled = {"username": username}
+        return render_template("register.html", filled=filled)
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
     if request.method == "GET":
-        return render_template("login.html")
+        return render_template("login.html", filled={})
 
     if request.method == "POST":
         username = request.form["username"]
@@ -253,7 +272,9 @@ def login():
             session["username"] = username
             return redirect("/")
         else:
-            return "VIRHE: väärä tunnus tai salasana"
+            flash("VIRHE: väärä tunnus tai salasana")
+            filled = {"username": username}
+            return render_template("login.html", filled=filled)
 
 @app.route("/logout")
 def logout():
@@ -272,11 +293,13 @@ def add_image():
     if request.method == "POST":
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
-            return "VIRHE: väärä tiedostomuoto"
+            flash("VIRHE: Väärä tiedostomuoto")
+            return redirect("/add_image")
 
         image = file.read()
         if len(image) > 1000 * 1024:
-            return "VIRHE: liian suuri kuva"
+            flash("VIRHE: Liian suuri kuva")
+            return redirect("/add_image")
 
         user_id = session["user_id"]
         users.update_image(user_id, image)
