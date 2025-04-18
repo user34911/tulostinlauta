@@ -39,12 +39,14 @@ def get_classes(post_id):
     sql = "SELECT title, value FROM post_classes WHERE post_id = ?"
     return db.query(sql, [post_id])
 
-def get_posts():
+def get_posts(page, page_size):
     sql = """SELECT p.id, p.title, u.id, u.username, p.model_year, p.grade
              FROM posts AS p, users AS u
              WHERE p.user_id = u.id
-             ORDER BY p.id DESC"""
-    return db.query(sql)
+             ORDER BY p.id DESC
+             LIMIT ? OFFSET ?"""
+    offset = page_size * (page - 1)
+    return db.query(sql, [page_size, offset])
 
 def get_post(post_id):
     sql = """SELECT posts.title,
@@ -97,7 +99,6 @@ def delete_post(post_id):
     sql = "DELETE FROM posts WHERE id = ?"
     db.execute(sql, [post_id])
 
-
 def find_posts(query):
     sql = """SELECT id, title
              FROM posts
@@ -107,3 +108,8 @@ def find_posts(query):
              ORDER BY id DESC"""
     haku = "%" + query + "%"
     return db.query(sql, [haku, haku, haku])
+
+def post_count():
+    sql = "SELECT COUNT(id) FROM posts"
+    result = db.query(sql)
+    return result[0][0]
