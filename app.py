@@ -54,6 +54,11 @@ def find_post():
         results = []
     return render_template("find_post.html", query=query, results=results)
 
+@app.route("/find_class/<value>")
+def find_class(value):
+    results = posts.find_posts(value)
+    return render_template("find_post.html", query=value, results=results)
+
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
     post = posts.get_post(post_id)

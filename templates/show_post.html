@@ -11,7 +11,7 @@
 {% if classes %}
 <p>
   {% for class in classes %}
-  <span class="layout-button">{{ class.title }}: {{ class.value }}</span>
+  <a href="/find_class/{{ class.value }}" class="layout-button">{{ class.title }}: {{ class.value }}</a>
   {% endfor %}
 </p>
 {% endif %}

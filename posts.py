@@ -107,7 +107,15 @@ def find_posts(query):
              OR model_year LIKE ?
              ORDER BY id DESC"""
     haku = "%" + query + "%"
-    return db.query(sql, [haku, haku, haku])
+    result = db.query(sql, [haku, haku, haku])
+    if not result:
+        sql = """SELECT p.id, p.title
+                 FROM posts p, post_classes c
+                 WHERE c.value LIKE ?
+                 AND c.post_id = p.id
+                 ORDER BY p.id DESC"""
+        result = db.query(sql, [haku])
+    return result
 
 def post_count():
     sql = "SELECT COUNT(id) FROM posts"
