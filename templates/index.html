@@ -9,7 +9,8 @@
 {% for post in posts %}
 <a href="/post/{{ post.id }}" class="frontpage-post">
 <div class="frontpage-post-content">
-  <span class="frontpage-fontsize">{{ post.title }} ({{ post.model_year }})</span><br>  
+  <span class="frontpage-fontsize">{{ post.title }} ({{ post.model_year }})</span><br>
+  <span class="frontpage-usertext">Arvosana: {{ post.grade }}/5</span><br>
   <span class="frontpage-usertext">Käyttäjältä: {{ post.username }}</span>
 </div>
 </a>

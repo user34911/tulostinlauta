@@ -4,35 +4,34 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<h2>{{ post.title }} ({{ post.model_year }})</h2>
-{% if image %}
-<img src="/post_image/{{ post.id }}" />
-{% endif %}
-{% if session.user_id == post.user_id %}
-<p>
-  <a href="/edit_post/{{ post.id }}">Muokkaa</a>
-  <a href="/delete_post/{{ post.id }}">Poista</a>
-</p>
-{% endif %}
-<p>
-  Arvosana: {{ post.grade }}/5
-</p>
-<p>
-  {{ post.review | show_lines }}
-</p>
+<h2 class="post-title">{{ post.title }} ({{ post.model_year }})</h2>
+<div class="post-usertext">
+  Julkaisija: <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
+</div>
 {% if classes %}
 <p>
-  Luokat:
-  <ul>
-    {% for class in classes %}
-    <li>{{ class.title }}: {{ class.value }}</li>
-    {% endfor %}
-  </ul>
+  {% for class in classes %}
+  <span class="layout-button">{{ class.title }}: {{ class.value }}</span>
+  {% endfor %}
 </p>
 {% endif %}
+{% if image %}
+<img src="/post_image/{{ post.id }}" class="post-image" />
+{% endif %}
+
 <p>
-  Julkaisija: <a href="/user/{{ post.user_id }}">{{ post.username }}</a>
+  <span class="post-grade">Arvosana: {{ post.grade }}/5</span>
 </p>
+<p class="post-textbox">
+  {{ post.review | show_lines }}
+</p>
+
+{% if session.user_id == post.user_id %}
+<p>
+  <a href="/edit_post/{{ post.id }}" class="layout-button">Muokkaa</a>
+  <a href="/delete_post/{{ post.id }}" class="layout-button">Poista</a>
+</p>
+{% endif %}
 <h3>Kommentit</h3>
 {% for comment in comments %}
 <p>

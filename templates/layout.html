@@ -7,25 +7,24 @@
 </head>
 
 <body>
-  <h1><a href="/">Tulostinlauta</a></h1>
+  <h1><a href="/" class="plain-link">Tulostinlauta</a></h1>
 
   {% if session.username %}
   <p>
-    Olet kirjautunut nimellä <b><a href="/user/{{ session.user_id }}">{{ session.username }}</a></b>
+    Olet kirjautunut nimellä <b><a href="/user/{{ session.user_id }}" >{{ session.username }}</a></b>
   </p>
   {% endif %}
 
   <p>
-    <a href="/find_post">Etsi julkaisu</a> -
+    <a href="/find_post" class="layout-button">Etsi julkaisu</a>
     {% if session.user_id %}
-    <a href="/new_post">Uusi julkaisu</a> -
-    <a href="/logout">Kirjaudu ulos</a>
+    <a href="/new_post" class="layout-button">Uusi julkaisu</a>
+    <a href="/logout" class="layout-button">Kirjaudu ulos</a>
     {% else %}
-    <a href="/login">Kirjaudu sisään</a> -
-    <a href="/register">Luo tunnus</a>
+    <a href="/login" class="layout-button">Kirjaudu sisään</a>
+    <a href="/register" class="layout-button">Luo tunnus</a>
     {% endif %}
   </p>
-
   {% block content %}{% endblock %}
 
 </body>
