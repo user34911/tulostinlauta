@@ -8,5 +8,6 @@
 <form action="/delete_post/{{ post.id }}" method="post">
   <input type="submit" name="delete" value="Poista julkaisu">
   <input type="submit" name="back" value="Vitsi oli">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
 </form>
 {% endblock %}

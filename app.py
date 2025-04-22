@@ -5,12 +5,19 @@ import math, time
 import config
 import posts, users
 import markupsafe
+import secrets
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
 
 def require_login():
     if "user_id" not in session:
+        abort(403)
+
+def check_csrf():
+    if "csrf_token" not in request.form:
+        abort(403)
+    if request.form["csrf_token"] != session["csrf_token"]:
         abort(403)
 
 @app.route("/")
@@ -76,6 +83,7 @@ def new_post():
 @app.route("/create_post", methods=["POST"])
 def create_post():
     require_login()
+    check_csrf()
 
     title = request.form["title"]
     if not title or len(title) > 50:
@@ -126,6 +134,7 @@ def create_post():
 @app.route("/create_comment", methods=["POST"])
 def create_comment():
     require_login()
+    check_csrf()
 
     comment = request.form["comment"]
     if not comment or len(comment) > 1000:
@@ -163,6 +172,7 @@ def edit_post(post_id):
 @app.route("/update_post", methods=["POST"])
 def update_post():
     require_login()
+    check_csrf()
     post_id = request.form["post_id"]
 
     post = posts.get_post(post_id)
@@ -225,6 +235,7 @@ def delete_post(post_id):
         return render_template("delete_post.html", post=post)
 
     if request.method == "POST":
+        check_csrf()
         if "delete" in request.form:
             posts.delete_post(post_id)
             return redirect("/")
@@ -270,6 +281,7 @@ def login():
         if user_id:
             session["user_id"] = user_id
             session["username"] = username
+            session["csrf_token"] = secrets.token_hex(16)
             return redirect("/")
         else:
             flash("VIRHE: väärä tunnus tai salasana")
@@ -291,6 +303,7 @@ def add_image():
         return render_template("add_image.html")
 
     if request.method == "POST":
+        check_csrf()
         file = request.files["image"]
         if not file.filename.endswith(".jpg"):
             flash("VIRHE: Väärä tiedostomuoto")

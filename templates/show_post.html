@@ -46,6 +46,7 @@
     <textarea name="comment" rows="8" cols="60" ></textarea>
   </p>
   <input type="hidden" name="post_id" value="{{ post.id }}">
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
   <input type="submit" value="Kommentoi" />
 </form>
 {% endblock %}
