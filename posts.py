@@ -100,19 +100,21 @@ def delete_post(post_id):
     db.execute(sql, [post_id])
 
 def find_posts(query):
-    sql = """SELECT id, title
-             FROM posts
-             WHERE review LIKE ?
+    sql = """SELECT p.id, p.title, p.model_year, u.username
+             FROM posts p, users u
+             WHERE (review LIKE ?
              OR title LIKE ?
-             OR model_year LIKE ?
-             ORDER BY id DESC"""
+             OR model_year LIKE ?)
+             AND p.user_id = u.id
+             ORDER BY p.id DESC"""
     haku = "%" + query + "%"
     result = db.query(sql, [haku, haku, haku])
     if not result:
-        sql = """SELECT p.id, p.title
-                 FROM posts p, post_classes c
+        sql = """SELECT p.id, p.title, p.model_year, u.username
+                 FROM posts p, post_classes c, users u
                  WHERE c.value LIKE ?
                  AND c.post_id = p.id
+                 AND p.user_id = u.id
                  ORDER BY p.id DESC"""
         result = db.query(sql, [haku])
     return result

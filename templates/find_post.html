@@ -15,10 +15,16 @@
 
 {% if query %}
 <h3>Tulokset</h3>
-<ul>
-  {% for post in results %}
-  <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
+{% if total > 0 %}
+{% if total == 1 %}
+<span class="frontpage-usertext">Yhteensä {{ total }} tulos</span>
+{% else %}
+<span class="frontpage-usertext">Yhteensä {{ total }} tulosta</span>
+{% endif %}
+{% endif %}
+{% for post in results %}
+<a href="/post/{{ post.id }}" class="found-box">{{ post.title }} ({{ post.model_year }})
+<span class="frontpage-usertext">Käyttäjältä: {{ post.username }}</span></a>
+{% endfor %}
 {% endif %}
 {% endblock %}

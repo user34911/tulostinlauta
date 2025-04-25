@@ -5,6 +5,23 @@ body {
     background-color: rgb(255, 238, 193);
   }
 
+.found-box {
+    display: block;
+    width: 40em;
+    height: 100%;
+    margin-block: 5px;
+    margin-left: 15px;
+    padding: 3px;
+    text-decoration: none;
+    color: #000;
+    background-color: rgb(252, 230, 171);
+    border: 1px solid rgb(182, 135, 75);
+}
+
+.found-box:hover {
+    background-color: rgb(255, 225, 144);
+}
+
 .comment-box {
     max-width: 40em;
     width: fit-content;

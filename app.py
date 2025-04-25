@@ -52,12 +52,14 @@ def find_post():
     else:
         query = ""
         results = []
-    return render_template("find_post.html", query=query, results=results)
+    total = len(results)
+    return render_template("find_post.html", query=query, results=results, total=total)
 
 @app.route("/find_class/<value>")
 def find_class(value):
     results = posts.find_posts(value)
-    return render_template("find_post.html", query=value, results=results)
+    total = len(results)
+    return render_template("find_post.html", query=value, results=results, total=total)
 
 @app.route("/post/<int:post_id>")
 def show_post(post_id):
