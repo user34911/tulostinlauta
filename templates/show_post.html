@@ -34,10 +34,13 @@
 {% endif %}
 <h3>Kommentit</h3>
 {% for comment in comments %}
-<p>
-  <b><a href="/user/{{ comment.user_id }}">{{ comment.username }}</a></b><br />
-  {{ comment.comment | show_lines }}
-</p>
+<div class="comment-box">
+  <img src="/image/{{ comment.user_id }}" alt="profiilikuva" class="comment-picture"/>
+  <div class="comment-info">
+    <a href="/user/{{ comment.user_id }}" class="comment-name">{{ comment.username }}</a>
+    <p class="comment-content">{{ comment.comment | show_lines }}</p>
+  </div>
+</div>
 {% endfor %}
 <h3>Lisää kommentti</h3>
 <form action="/create_comment" method="post">

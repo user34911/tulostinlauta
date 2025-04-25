@@ -5,6 +5,43 @@ body {
     background-color: rgb(255, 238, 193);
   }
 
+.comment-box {
+    max-width: 40em;
+    width: fit-content;
+    min-width: 300px;
+    min-height: 45px;
+    height: fit-content;
+    border: 1px solid rgb(182, 135, 75);
+    background-color: rgb(255, 244, 216);
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 1px;
+    padding-right: 5px;
+    margin-block: 10px;
+    overflow-wrap: break-word;
+    margin-left: 10px;
+}
+
+.comment-picture {
+    width: 45px;
+    height: 45px;
+    position: absolute;
+    border-radius: 5px;
+}
+
+.comment-name {
+    margin: 0;
+}
+
+.comment-info {
+    padding-left: 55px;
+}
+
+.comment-content {
+    margin: 5px 0 0;
+    padding-bottom: 3px;
+}
+
 .post-title {
     margin-bottom: 2px;
 }
