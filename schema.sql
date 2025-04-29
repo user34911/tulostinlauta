@@ -2,6 +2,8 @@ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     username TEXT UNIQUE,
     password_hash TEXT,
+    join_date TEXT,
+    about_me TEXT,
     image BLOB
 );
 

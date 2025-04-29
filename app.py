@@ -44,6 +44,31 @@ def show_user(user_id):
     posts = users.get_posts(user_id)
     return render_template("show_user.html", user=user, posts=posts)
 
+@app.route("/update_aboutme", methods=["GET", "POST"])
+def update_aboutme():
+    require_login()
+    user_id = session["user_id"]
+
+    if request.method == "GET":
+        filled = users.get_aboutme(user_id)
+        if not filled:
+            filled = ""
+        return render_template("about_me.html", filled=filled)
+
+    if request.method == "POST":
+        check_csrf()
+
+        about_me = request.form["about_me"]
+        if len(about_me) > 250:
+            flash("VIRHE: Maksimissaan 250 merkkiä")
+            filled = users.get_aboutme(user_id)
+            if not filled:
+                filled = ""
+            return render_template("about_me.html", filled=filled)
+
+        users.update_aboutme(user_id, about_me)
+        return redirect("/user/" + str(user_id))
+
 @app.route("/find_post")
 def find_post():
     query = request.args.get("query")
