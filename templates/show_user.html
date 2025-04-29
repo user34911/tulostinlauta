@@ -6,7 +6,7 @@
 {% block content %}
 <h2>Käyttäjä: {{ user.username }}</h2>
 {% if user.has_image %}
-<img src="/image/{{ user.id }}" />
+<img src="/image/{{ user.id }}" alt="Käyttäjän {{ user.username }} profiilikuva"/>
 {% endif %}
 {% if session.user_id == user.id %}
 <p>
