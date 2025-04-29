@@ -5,6 +5,67 @@ body {
     background-color: rgb(255, 238, 193);
   }
 
+.gray-text {
+    color:rgb(90, 90, 90);
+}
+
+.profile-post {
+    display: block;
+    min-width: 20em;
+    width: fit-content;
+    height: 100%;
+    margin-block: 5px;
+    margin-left: 15px;
+    padding-right: 10px;
+    padding: 3px;
+    text-decoration: none;
+    color: #000;
+    background-color: rgb(252, 230, 171);
+    border: 1px solid rgb(182, 135, 75);
+}
+
+.profile-post:hover {
+    background-color: rgb(255, 225, 144);
+}
+
+.profile-box {
+    display: flex;
+    width: 40em;
+    max-width: 40em;
+    height: fit-content;
+    margin-left: 0px;
+}
+
+.profile-text {
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.profile-picture {
+    max-width: 200px;
+    max-height: 200px;
+    float: left;
+}
+
+.profile-info {
+    padding-left: 10px;
+    float: left;
+}
+
+.profile-nametext {
+    font-size: 50px;
+}
+
+.profile-aboutme {
+    background-color: rgb(255, 244, 216);
+    overflow-wrap: break-word;
+    height: fit-content;
+    min-height: inherit;
+    max-width: 30em;
+    margin: 5px;
+    padding: 5px;
+}
+
 .found-box {
     display: block;
     width: 40em;

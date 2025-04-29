@@ -4,22 +4,32 @@
 {% block title %}{{ user.username }}{% endblock %}
 
 {% block content %}
-<h2>Käyttäjä: {{ user.username }}</h2>
-{% if user.has_image %}
-<img src="/image/{{ user.id }}" alt="Käyttäjän {{ user.username }} profiilikuva"/>
-{% endif %}
+<div class="profile-box">
+  {% if user.has_image %}
+  <img src="/image/{{ user.id }}" alt="Käyttäjän {{ user.username }} profiilikuva" class="profile-picture"/>
+  {% endif %}
+  <div class="profile-info">
+    <div class="profile-nametext">{{ user.username }}</div>
+    <div class="gray-text">Liittynyt {{ user.join_date }}</div>
+    <div class="profile-text">Käyttäjän kuvaus:</div>
+    {% if user.about_me %}
+    <div class="profile-aboutme">{{ user.about_me | show_lines }}</div>
+    {% else %}
+    <div class="profile-aboutme">Ei kuvausta</div>
+    {% endif %}
+  </div>
+</div>
 {% if session.user_id == user.id %}
 <p>
-  <a href="/add_image">Vaihda profiilikuvaa</a>
+  <a href="/add_image" class="layout-button">Vaihda profiilikuvaa</a>
+  <a href="/update_aboutme" class="layout-button">Päivitä kuvausta</a>
 </p>
 {% endif %}
+<h3>Julkaisut</h3>
 <p>
   Julkaisujen määrä: {{ posts | count }}
 </p>
-<h3>Julkaisut</h3>
-<ul>
-  {% for post in posts %}
-  <li><a href="/post/{{ post.id }}">{{ post.title }}</a></li>
-  {% endfor %}
-</ul>
+{% for post in posts %}
+<a href="/post/{{ post.id }}" class="profile-post">{{ post.title }} ({{ post.model_year }}) {{ post.grade }}/5</a>
+{% endfor %}
 {% endblock %}

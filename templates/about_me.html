@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% extends "layout.html" %}
+
+{% block title %}Käyttäjän kuvaus{% endblock %}
+
+{% block content %}
+<h2>Lisää kuvaus</h2>
+{% for message in get_flashed_messages() %}
+<p>
+  <b>{{ message }}</b>
+</p>
+{% endfor %}
+<form action="/update_aboutme" method="post">
+  <p>
+    <label for="about_me">Käyttäjän kuvaus</label>:<br/>
+    <textarea id="about_me" name="about_me" rows="8" cols="60">{{ filled }}</textarea>
+  </p>
+  <input type="submit" value="update" />
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
+</form>
+{% endblock %}
