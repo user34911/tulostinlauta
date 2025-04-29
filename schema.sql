@@ -36,3 +36,9 @@ CREATE TABLE post_classes (
     title TEXT,
     value TEXT
 );
+
+CREATE INDEX idx_post_value ON post_classes (value);
+CREATE INDEX idx_post_title ON posts (title);
+CREATE INDEX idx_post_model_year ON posts (model_year);
+CREATE INDEX idx_post_grade ON posts (grade);
+CREATE INDEX idx_post_review ON posts (review);
