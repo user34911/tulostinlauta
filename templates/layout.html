@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
   <title>{% block title %}{% endblock %}</title>
   <link rel="stylesheet" href="/static/main.css">
@@ -8,13 +7,11 @@
 
 <body>
   <h1><a href="/" class="plain-link">Tulostinlauta</a></h1>
-
   {% if session.username %}
   <p>
-    Olet kirjautunut nimellä <b><a href="/user/{{ session.user_id }}" >{{ session.username }}</a></b>
+    Olet kirjautunut nimellä <b><a href="/user/{{ session.user_id }}">{{ session.username }}</a></b>
   </p>
   {% endif %}
-
   <p>
     <a href="/find_post" class="layout-button">Etsi julkaisu</a>
     {% if session.user_id %}
@@ -26,7 +23,5 @@
     {% endif %}
   </p>
   {% block content %}{% endblock %}
-
 </body>
-
 </html>

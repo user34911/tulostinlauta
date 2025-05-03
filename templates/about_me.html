@@ -15,7 +15,7 @@
     <label for="about_me">Käyttäjän kuvaus</label>:<br/>
     <textarea id="about_me" name="about_me" rows="8" cols="60">{{ filled }}</textarea>
   </p>
-  <input type="submit" value="update" />
+  <input type="submit" value="Päivitä"/>
   <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
 </form>
 {% endblock %}
