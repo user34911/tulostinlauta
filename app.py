@@ -1,11 +1,15 @@
 import sqlite3
+import math
+import time
+import secrets
+
 from flask import Flask
 from flask import redirect, render_template, request, session, abort, make_response, g, flash
-import math, time
-import config
-import posts, users
 import markupsafe
-import secrets
+
+import config
+import posts
+import users
 
 app = Flask(__name__)
 app.secret_key = config.secret_key
@@ -41,8 +45,8 @@ def show_user(user_id):
     user = users.get_user(user_id)
     if not user:
         abort(404)
-    posts = users.get_posts(user_id)
-    return render_template("show_user.html", user=user, posts=posts)
+    user_posts = users.get_posts(user_id)
+    return render_template("show_user.html", user=user, posts=user_posts)
 
 @app.route("/update_aboutme", methods=["GET", "POST"])
 def update_aboutme():
