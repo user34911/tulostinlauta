@@ -10,11 +10,14 @@
 </p>
 {% endfor %}
 <form action="/add_image" method="post" enctype="multipart/form-data">
-    <p>
-      <label for="image">Kuva</label>:
-      <input id="image"type="file" name="image" accept=".jpg" />
-    </p>
-    <input type="submit" value="Lähetä" />
-    <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}" />
+  <p>
+    Kuvan maksimikoko 1MB, tuettu tiedostomuoto JPG
+  </p>
+  <p>
+    <label for="image">Kuva</label>:
+    <input id="image"type="file" name="image" accept=".jpg"/>
+  </p>
+  <input type="submit" value="Lähetä"/>
+  <input type="hidden" name="csrf_token" value="{{ session.csrf_token }}"/>
 </form>
 {% endblock %}
